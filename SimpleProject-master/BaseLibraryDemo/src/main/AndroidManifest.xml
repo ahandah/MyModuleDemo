@@ -1,0 +1,14 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.sxu.baselibrarydemo">
+
+    <application>
+
+        <activity android:name=".BaseLibraryHomeActivity"/>
+
+        <activity android:name=".ToolHomeActivity"/>
+
+        <activity android:name=".UIHomeActivity"/>
+
+    </application>
+
+</manifest>

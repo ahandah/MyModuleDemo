@@ -1,0 +1,51 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+
+    ext.kotlin_version = '1.1.51'
+
+    repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
+        google()
+        jcenter()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.tencent.mm:AndResGuard-gradle-plugin:1.2.13'
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+        classpath 'com.meituan.android.walle:plugin:1.1.6'
+        // classpath 'org.aspectj:aspectjtools:1.8.9'
+        classpath 'com.hujiang.aspectjx:gradle-android-plugin-aspectjx:2.0.0'
+        classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2'
+    }
+}
+
+allprojects {
+    repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
+        maven { url 'https://jitpack.io' }
+        // 微博分享
+        maven { url "https://dl.bintray.com/thelasterstar/maven/" }
+        // 华为推送
+        maven { url 'http://developer.huawei.com/repo/' }
+        google()
+        jcenter()
+        mavenCentral()
+    }
+}
+
+project.ext {
+    compileSdkVersion = COMPILE_SDK_VERSION.toInteger()
+    minSdkVersion = MIN_SDK_VERSION
+    targetSdkVersion = TARGET_SDK_VERSION
+
+    isModule = IS_MODULE.toBoolean()
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

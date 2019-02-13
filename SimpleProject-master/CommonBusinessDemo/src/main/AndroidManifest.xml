@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.sxu.commonbusinessdemo">
+
+    <application>
+        <activity android:name=".CommonBusinessHomeActivity"/>
+        <activity android:name=".PayActivity">
+        </activity>
+        <activity android:name=".LoginVerificationActivity">
+        </activity>
+        <activity android:name=".PushActivity">
+        </activity>
+        <activity android:name=".PermissionDemoActivity">
+        </activity>
+    </application>
+
+</manifest>

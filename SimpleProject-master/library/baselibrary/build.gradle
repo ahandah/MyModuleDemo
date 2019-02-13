@@ -1,0 +1,49 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.greenrobot.greendao'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        resourcePrefix "bl_"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "com.android.support:appcompat-v7:${SUPPORT_LIB_VERSION}"
+    testImplementation "junit:junit:${JUNIT_VERSION}"
+    androidTestImplementation "com.android.support.test:runner:${TEST_RUNNER_VERSION}"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:${TEST_ESPRESSO_CORE_VERSION}"
+    implementation "com.android.support:recyclerview-v7:${SUPPORT_LIB_VERSION}"
+
+    // Okhttp3
+    compile "com.squareup.okhttp3:okhttp:${OKHTTP_VERSION}"
+    compile "com.squareup.okhttp3:logging-interceptor:${OKHTTP_LOG_INTERCEPTOR_VERSION}"
+    compile "com.google.code.gson:gson:${GSON_VERSION}"
+    // Retrofit
+    compile "com.squareup.retrofit2:retrofit:${RETROFIT_VERSION}"
+    compile "com.squareup.retrofit2:adapter-rxjava:${RETROFIT_RXJAVA_VERSION}"
+    compile "com.squareup.retrofit2:converter-gson:${RETROFIT_CONVERTER_GSON_VERSION}"
+    // RxJava
+    compile "io.reactivex:rxjava:${RXJAVA_VERSION}"
+    compile "io.reactivex:rxandroid:${RXJAVA_RXANDROID_VERSION}"
+    // AutoViewPager
+    compile "com.github.JuHonggang:Autoviewpager:${AUTOVIEWPAGER_VERSION}"
+    // GreenDao
+    compile 'org.greenrobot:greendao:3.2.2'
+}

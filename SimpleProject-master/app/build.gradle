@@ -1,0 +1,175 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'AndResGuard'
+apply plugin: 'walle'
+apply plugin: 'android-aspectjx'
+
+android {
+
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        applicationId "com.sxu.simpleproject"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [moduleName: project.getName()]
+            }
+        }
+
+        ndk {
+            abiFilters 'armeabi', 'armeabi-v7a'
+        }
+
+        manifestPlaceholders = [
+                JPUSH_PKGNAME: "${applicationId}",
+                JPUSH_APPKEY : "appkey",
+                JPUSH_CHANNEL: "channel",
+                QQ_ID        : "qq_id"
+        ]
+    }
+
+    signingConfigs {
+        config {
+            keyAlias '别名'
+            keyPassword 'key密码'
+            storePassword 'store密码'
+            storeFile file('keystoreFile文件路径') // 将keystore存放在项目中的指定目录下
+        }
+    }
+
+    dexOptions {
+        preDexLibraries = false
+        javaMaxHeapSize "4g"
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+        quiet true
+        ignoreWarnings true
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            // 开启混淆
+            minifyEnabled false
+            // 开启对齐优化
+            zipAlignEnabled true
+            // 签名
+            //signingConfig signingConfigs.config
+        }
+
+        release {
+
+            debuggable false
+            // 删除无用的资源
+            shrinkResources true
+            // 开启混淆
+            minifyEnabled true
+            // 开启对齐优化
+            zipAlignEnabled true
+            // 签名
+            signingConfig signingConfigs.config
+
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    // 构建变体
+    flavorDimensions "mode"
+    productFlavors {
+        free {
+            versionCode 1
+            versionName "1.0"
+            applicationIdSuffix ".free"
+            versionNameSuffix "-free"
+            dimension "mode"
+        }
+
+        pro {
+            versionCode 1
+            versionName "1.0"
+            applicationIdSuffix ".pro"
+            versionNameSuffix "-pro"
+            dimension "mode"
+        }
+    }
+}
+
+andResGuard {
+    // mappingFile = file("./resource_mapping.txt")
+    mappingFile = null
+    use7zip = true
+    useSign = true
+    // 打开这个开关，会keep住所有资源的原始路径，只混淆资源的名字
+    keepRoot = false
+    whiteList = [
+            // for your icon
+            "R.drawable.icon",
+            // for fabric
+            "R.string.com.crashlytics.*",
+            // for google-services
+            "R.string.google_app_id",
+            "R.string.gcm_defaultSenderId",
+            "R.string.default_web_client_id",
+            "R.string.ga_trackingId",
+            "R.string.firebase_database_url",
+            "R.string.google_api_key",
+            "R.string.google_crash_reporting_api_key"
+    ]
+    compressFilePattern = [
+            "*.png",
+            "*.jpg",
+            "*.jpeg",
+            "*.gif",
+    ]
+    sevenzip {
+        artifact = 'com.tencent.mm:SevenZip:1.2.13'
+        //path = "/usr/local/bin/7za"
+    }
+
+    /**
+     * 可选： 如果不设置则会默认覆盖assemble输出的apk
+     **/
+    // finalApkBackupPath = "${project.rootDir}/final.apk"
+
+    /**
+     * 可选: 指定v1签名时生成jar文件的摘要算法
+     * 默认值为“SHA-1”
+     **/
+    // digestalg = "SHA-256"
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "com.android.support:appcompat-v7:${SUPPORT_LIB_VERSION}"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    testImplementation "junit:junit:${JUNIT_VERSION}"
+    androidTestCompile 'com.android.support:support-annotations:26.1.0'
+    androidTestImplementation "com.android.support.test:runner:${TEST_RUNNER_VERSION}"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:${TEST_ESPRESSO_CORE_VERSION}"
+    kapt "com.alibaba:arouter-compiler:${AROUTER_COMPILER_VERSION}"
+    implementation project(':basecomponent')
+    implementation project(':commonbusiness')
+    if (isModule) {
+        implementation project(':MainModule')
+    }
+}
+
+walle {
+    // 指定渠道包的输出路径
+    apkOutputFolder = new File("${project.buildDir}/outputs/channels");
+    // 定制渠道包的APK的文件名称
+    apkFileNameFormat = '${appName}-${packageName}-${channel}-${buildType}-v${versionName}-${versionCode}-${buildTime}.apk';
+    // 渠道配置文件
+    channelFile = new File("${project.getProjectDir()}/channel")
+}

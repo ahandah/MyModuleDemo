@@ -1,0 +1,11 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.sxu.baselibrary">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+    <application>
+        <provider
+            android:authorities="${applicationId}.provider"
+            android:name=".commonutils.BaseContentProvider"/>
+    </application>
+</manifest>
